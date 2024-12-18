@@ -31,10 +31,19 @@
 
 ### 7. Containerization:
 - **Dockerization**: To ensure a consistent and isolated execution environment, Docker will be used to containerize the entire solution. This includes packaging the necessary libraries, the Selenium web driver, and other dependencies within the Docker container.
+    - Why Docker??
+    
+     ![docker](./asset/docker.jpg)
+
 - **Web Browser and Web Driver**: The Docker container will also include a compatible web browser (e.g., Chrome) and its corresponding web driver, ensuring compatibility with Selenium.
 
 ### 8. Project Management:
 - **Jira**: Jira will be used as a project management tool to track progress, assign tasks, and collaborate with other developers on the project. This ensures that the development process remains organized and transparent.
+
+
+## Architecture:
+
+![architecture](./asset/architecture-components.png)
 
 ## Technical Stack:
 - **Python** for scripting and automation
