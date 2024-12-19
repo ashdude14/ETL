@@ -8,6 +8,10 @@
 
 - Additionally, the project is managed using Jira, which helps in tracking progress, assigning tasks, and collaborating with other developers. This project structure ensures a scalable, maintainable, and efficient ETL pipeline with minimal manual intervention, making it suitable for automating data extraction and loading from websites on a regular basis. By leveraging Docker and Apache Airflow, this solution provides flexibility and scalability for future enhancements and integration with other data sources.
 
+
+![diagram](./asset/basic.png)
+
+
 ## Key Components:
 
 ### 1. Python Modules and Dependencies:

@@ -27,10 +27,13 @@ service = Service(executable_path=chromedriver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Now you can use the driver to navigate and interact with the web page
-driver.get("https://github.com")
+driver.implicitly_wait(5)
+driver.get("https://docs.docker.com/compose/")
+
 
 # Do something with the driver...
 print(driver.title)
+
 
 # Always quit the driver at the end
 driver.quit()

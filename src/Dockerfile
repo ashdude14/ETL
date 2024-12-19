@@ -27,6 +27,7 @@ RUN apk update && apk add --no-cache \
     ttf-freefont \
     chromium \
     chromium-chromedriver \
+    xvfb \
     && rm -rf /var/cache/apk/*
 
 
@@ -47,9 +48,17 @@ ENV CHROME_BIN=/usr/bin/chromium
  # Set the working directory to /app
 WORKDIR /app
 
-# EXPOSE 4444
+EXPOSE 4444
 
 # Copy the script into the container
 COPY test.py /app/test.py
 
+# Step 1: Creating data.csv file inside container
+RUN mkdir -p /app/data && touch /app/data/data.csv
+
+# Step 2: Running the Xvfb server and Python script
+#CMD ["sh", "-c", "Xvfb :99 -screen 0 1280x1024x24 & python test.py"]
+
 CMD ["python", "test.py"]
+
+
