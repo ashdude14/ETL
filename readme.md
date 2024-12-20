@@ -17,7 +17,7 @@
 ### 1. Data Extraction:
  **Selenium Web Scraping** :
  
-- <b>Detailed Implementation </b> : [see here!]("https://www.github.com/ashdude14/DA4)
+- <b>Detailed Implementation </b>. [see here](https://www.github.com/ashdude14/DA4)
 
 - As described in the attached github repo to gather through web scraping there are mendatory steps to follow -
    
