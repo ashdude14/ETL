@@ -51,7 +51,7 @@ WORKDIR /app
 EXPOSE 4444
 
 # Copy the script into the container
-COPY test.py /app/test.py
+COPY WebScrap.py /app/WebScrap.py
 
 # Step 1: Creating data.csv file inside container
 RUN mkdir -p /app/data && touch /app/data/data.csv
@@ -59,6 +59,6 @@ RUN mkdir -p /app/data && touch /app/data/data.csv
 # Step 2: Running the Xvfb server and Python script
 #CMD ["sh", "-c", "Xvfb :99 -screen 0 1280x1024x24 & python test.py"]
 
-CMD ["python", "test.py"]
+CMD ["python", "WebScrap.py"]
 
 
