@@ -1,8 +1,28 @@
 services:
-  app:
+  standaloneETL:
+    image: selenium/standalone-chrome:latest
+    container_name: ETL_Selenium
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    environment:
+      - SE_ENABLE_TRACING=false
+      - SE_VNC_PASSWORD=etl 
+    networks:
+      - grid
+
+  python:
     build:
-      context: ./src
-      dockerfile: Dockerfile
+      context: /src/collect/
+    container_name: pythonETL
+    depends_on:
+      - standaloneETL
     volumes:
-     - ./data:/app/data
+     - /data:/app/data
+    networks:
+      - grid
+
+networks:
+  grid:
+    driver: bridge
 
