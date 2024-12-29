@@ -26,15 +26,64 @@
    - Run the code and ensure that it should automate withouth <i>headless</i> mode.
 - Here we need to customize all the steps inside the container which will increase memory overhead and execution time, also the process should only run without <i>headless option it will be somewhat complicated because to work with GUI inside the Docker container, we need to mention the ```display server``` with ```x11``` service of ```Xvfb``` library of Dockerfile. </i> To optimize this Automation of website, we are using the image which is available as ```selenium/standalone-chrome``` in <i> DockerHub<i> and this reduces the overall size of container and increases speed of execution.
 
+- Extracted data preview -
+```
+Job Details
+Data Verification Analyst
+Foundation Ai | 2.7 | 18 Reviews
+"0-5 Yrs | Not disclosed | Kolkata, Mumbai, New Delhi, Hyderabad, Pune, Chennai, Bengaluru"
+Foundation AI is looking for Data Verification Analyst to join our dynamic team and emb...
+metadatapythondata analysisdata managementdata analyticsdata validationconfigurationdata mining
+1 Day Ago | Save
+Team Member Data Analyst
+Bajaj Allianz General Insurance | 3.9 | 2276 Reviews
+0-4 Yrs | Not disclosed | Pune
+"Comprehend customize report requirement by stakeholders (NHOD, zonal heads, vertical he..."
+AutomationData validationProcess efficiencyActuarialData qualityData analyticsData AnalystManager Quality Control
+13 Days Ago | Save
+Data Analyst
+Dtechnogenics | 4.3 | 5 Reviews
+0-3 Yrs | Not disclosed | Pune(Karve Nagar)
+"Data Analyst, Required Fresher - 3 yrs experience. Data Analyst Certification is mandat..."
+Data AnalysisData AnalystData Analytics TrainerDataAnalyticsData analyticsTrainingAnalysis
+1 Day Ago | Save
+Data Analyst
+Techsense Academy
+0-2 Yrs | Not disclosed | Jaipur
+"Managing master data, including creation, updates, and deletion. Managing users an..."
+UsageData AnalystDataData analysis
+6 Days Ago | Save
+Data Analyst(English Required)
+Peroptyx
+0-5 Yrs | Not disclosed | Remote
+Fluent in English with excellent research skills and local knowledge of India|Review an...
+Data AnalysisEnglishData AnalyticsData MappingMappingAnalyticsAnalysisData
+15 Days Ago | Save
+```
+### ***[Note]
+- Working with ```selenium/standalone/chrome/firefox/any_browser``` needs proper attention, though I have cracked the best practices of doing this little lately after wasting many hours, including posting an ```issue``` on ```docker-selenium```. You can read it here ->  [[dockarizing-selenium-python-solution]](https://github.com/SeleniumHQ/docker-selenium/issues/2540#issuecomment-2563834846)
+
+
 
 ### 2. Data Deduplication:
 - **Manual Deduplication**: Before loading the extracted data into the data warehouse, deduplication will be performed to avoid inserting duplicate records. This ensures data quality and prevents redundancy.
-
 ### 3. Data Transformation:
 - **Data Structuring**: The extracted data will be transformed into a structured format (e.g., JSON, CSV, or DataFrame) that aligns with the target data warehouse schema.
 
+    - **Data Preview**:
+
+        | Job Id   | Title                        | Company Name                     | Experience | Salary        | Locations                                                          | Date        | Descriptions                                                                                          | Skills                                                                                       |
+        |----------|------------------------------|----------------------------------|------------|---------------|--------------------------------------------------------------------|-------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+        | DAVE0001 | Data Verification Analyst    | Foundation AI                   | 0-5 Yrs    | Not disclosed | Kolkata, Mumbai, New Delhi, Hyderabad, Pune, Chennai, Bengaluru   | 1 Day Ago  | Foundation AI is looking for Data Verification Analyst to join our dynamic team and emb...       | metadatapythondata analysisdata managementdata analyticsdata validationconfigurationdata mining |
+        | TEME0007 | Team Member Data Analyst     | Bajaj Allianz General Insurance | 0-4 Yrs    | Not disclosed | Pune                                                               | 13 Days Ago | Comprehend customize report requirement by stakeholders (NHOD, zonal heads, vertical he... | AutomationData validationProcess efficiencyActuarialData qualityData analyticsData AnalystManager Quality Control |
+        | DAAN0013 | Data Analyst                 | Dtechnogenics                   | 0-3 Yrs    | Not disclosed | Pune(Karve Nagar)                                                  | 1 Day Ago  | Data Analyst, Required Fresher - 3 yrs experience. Data Analyst Certification is mandat... | Data AnalysisData AnalystData Analytics TrainerDataAnalyticsData analyticsTrainingAnalysis |
+        | DAAN0019 | Data Analyst                 | Techsense Academy               | 0-2 Yrs    | Not disclosed | Jaipur                                                             | 6 Days Ago  | Managing master data, including creation, updates, and deletion. Managing users an...       | UsageData AnalystDataData analysis                                                           |
+                                              
+
+      
+
 ### 4. Data Loading:
-- **Database Interaction**: The structured data will be loaded into a SQL-based data warehouse, such as SQL Server or a free-tier SQL database. SQL queries will be used for the insertion of data into the database.
+- **Database Interaction**: The structured data  loaded into a SQL-based data warehouse, here using Postgres server. [```endpoints``` and ```queires``` to interact with this database  will be published after some time.]
 
 ### 5. Airflow Orchestration:
 - **DAG Creation**: A Directed Acyclic Graph (DAG) will be created within Apache Airflow to schedule and automate the ETL pipeline. The DAG will be configured to run weekly and trigger the Python script that performs the data extraction, transformation, and loading.
