@@ -85,6 +85,31 @@ Data AnalysisEnglishData AnalyticsData MappingMappingAnalyticsAnalysisData
 ### 4. Data Loading:
 - **Database Interaction**: The structured data  loaded into a SQL-based data warehouse, here using Postgres server. [```endpoints``` and ```queires``` to interact with this database  will be published after some time.]
 
+- Using Postgres service free tier provided by ```aiven```, console snapshot 
+
+    ![aiven](./asset/pg.png)
+
+- Connection made using ```python```
+ ```python
+ 
+def connect_to_db():
+    try:
+        # Retrievinge database URL from environment variables
+        database_url = os.getenv("DB_URL")
+        if not database_url:
+            raise ValueError("DATABASE_URL is not set in the environment.")
+        
+        # Connecting the database
+        conn = psycopg.connect(database_url)
+        print("Connection established!")
+        return conn
+    except Exception as e:
+        print(f"Error connecting to the database: {e}")
+        return None
+
+
+ ```
+
 ### 5. Airflow Orchestration:
 - **DAG Creation**: A Directed Acyclic Graph (DAG) will be created within Apache Airflow to schedule and automate the ETL pipeline. The DAG will be configured to run weekly and trigger the Python script that performs the data extraction, transformation, and loading.
 - **PythonOperator**: The PythonOperator in Airflow will be used to execute the Python script that automates the website interaction and data processing.
