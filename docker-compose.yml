@@ -19,10 +19,21 @@ services:
       - standaloneETL
     volumes:
      - /data:/app/data
+     - shared:/app/data
     networks:
       - grid
-
+      
+  transform: 
+    build: /src/transform/
+    container_name: transformETL
+    depends_on:
+      - python
+    volumes:
+      - /data:/app/data/transform/
+      - shared:/app/data
 networks:
   grid:
     driver: bridge
 
+volumes:
+  shared:
