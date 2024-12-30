@@ -178,7 +178,50 @@ def connect_to_db():
 
 ### 5. Airflow Orchestration:
 - **DAG Creation**: A Directed Acyclic Graph (DAG) will be created within Apache Airflow to schedule and automate the ETL pipeline. The DAG will be configured to run weekly and trigger the Python script that performs the data extraction, transformation, and loading.
-- **PythonOperator**: The PythonOperator in Airflow will be used to execute the Python script that automates the website interaction and data processing.
+     - As Airlow uses a lightweight TAskFlow API to operate DAGs, the implementation in python described below- 
+     ```python
+    from airflow.decorators import dag, task
+    from airflow.operators.bash import BashOperator # Airflow has kind of Docker operator? use it after finding in registory.. https://registry.astronomer.io/modules?types=operators
+    from airflow import Dataset
+    from pendulum import datetime
+
+    @dag(
+        dag_id="ETL2024DEC31",
+        start_date=datetime(2024, 12, 30), 
+        schedule='0 10 * * 1',  # weekly--> cron expression https://crontab.guru/  “At 10:00 on Monday.”
+        catchup=False,
+        doc_md=__doc__,
+        default_args={"owner": "Astro", "retries": 3}, # Retries can be overridden in the task definition
+        tags=["My ETL DAG!"],  # To recognize DAG in more complex project 
+    )
+    def ETL2024DEC31():
+        start_standalone_server = BashOperator(
+            task_id="start_standalone_server",
+            bash_command="echo 'Starting standalone server!'",
+        )
+
+        perform_web_scraping = BashOperator(
+            task_id="perform_web_scraping",
+            bash_command="echo 'Performing web scraping!'",
+        )
+
+        transformation = BashOperator(
+            task_id="transformation",
+            bash_command="echo 'Performing data transformation!'",
+        )
+
+        loading_to_postgres_server = BashOperator(
+            task_id="loading_to_postgres_server",
+            bash_command="echo 'Loading to Postgres server!'",
+        )
+
+        # Defining task dependencies
+        start_standalone_server >> perform_web_scraping >> transformation >> loading_to_postgres_server
+
+    # Instantiating the DAG
+    ETL2024DEC31()
+     ```
+- **Operators And Decorators**: The PythonOperator/BashOperator aong with the DAG and Task decorators in Airflow  used to execute the Python script that automates the website interaction and data processing, transform data and then load it to Postgres server.
 
 ### 6. Containerization:
 - **Dockerization**: To ensure a consistent and isolated execution environment, Docker will be used to containerize the entire solution. This includes packaging the necessary libraries, the Selenium web driver, and other dependencies within the Docker container.
