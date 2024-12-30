@@ -109,6 +109,72 @@ def connect_to_db():
 
 
  ```
+ - Data Insertion log -
+     function to insert data from csv file to Postgres server
+
+    ```python
+        
+    def insert_from_csv(cursor, csv_file_path):
+        """
+        Insert data from a CSV file into the database, ensuring no duplicate Job_Id values.
+        :param cursor: Database cursor
+        :param csv_file_path: Path to the CSV file
+        """
+        try:
+            with open(csv_file_path, mode="r", encoding="utf-8") as csv_file:
+                csv_reader = csv.DictReader(csv_file) 
+                
+                # Iterate over each row in the CSV
+                for row in csv_reader:
+                    job_id = row.get("Job Id")
+                    title = row.get("Title")
+                    company_name = row.get("Company Name")
+                    experience = row.get("Experience")
+                    salary = row.get("Salary")
+                    locations = row.get("Locations")
+                    job_date = row.get("Date")
+                    descriptions = row.get("Descriptions")
+                    skills = row.get("Skills")
+
+                    # Check if the Job_Id already exists
+                    check_query = "SELECT COUNT(*) FROM data_analyst_job.jobs WHERE Job_Id = %s"
+                    cursor.execute(check_query, (job_id,))
+                    exists = cursor.fetchone()[0] > 0
+
+                    if exists:
+                        print(f"Skipping Job_Id {job_id}: already exists.")
+                        continue  
+
+                    # Insert the new row into the table
+                    insert_query = """
+                    INSERT INTO data_analyst_job.jobs 
+                    (Job_Id, Title, Company_Name, Experience, Salary, Locations, Job_Date, Descriptions, Skills)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+                    """
+                    try:
+                        cursor.execute(
+                            insert_query,
+                            (job_id, title, company_name, experience, salary, locations, job_date, descriptions, skills),
+                        )
+                        print(f"Inserted Job_Id {job_id} successfully.")
+                    except UniqueViolation:
+                        print(f"Job_Id {job_id} caused a unique constraint violation. Skipping.")
+        except Exception as e:
+            print(f"Error processing the CSV file: {e}")
+
+    ```
+   - log [snapshot] - 
+   
+     ![log](./asset/insert.png)
+
+   - SELECTing data with the help of command ```SELECT * FROM data_analyst_job.jobs ``` log -
+
+     ![](./asset/select.png)
+
+    - Filter command to show job with 0-2 yrs experience log -
+      ![](./asset/exp.png)
+
+    -  ```SELECT * FROM data_analyst_job.jobs WHERE experience = %s", ("0-2 Yrs",)) ``` 
 
 ### 5. Airflow Orchestration:
 - **DAG Creation**: A Directed Acyclic Graph (DAG) will be created within Apache Airflow to schedule and automate the ETL pipeline. The DAG will be configured to run weekly and trigger the Python script that performs the data extraction, transformation, and loading.
